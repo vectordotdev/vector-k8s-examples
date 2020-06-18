@@ -1,0 +1,18 @@
+namespace: vector-test-kustomize
+
+bases:
+  - github.com/timberio/vector/distribution/kubernetes?ref=k8s-kubectl-deployment
+
+patchesStrategicMerge:
+  - patches/vector-image.yaml
+
+resources:
+  - namespace.yaml
+
+configMapGenerator:
+  - name: vector-config
+    files:
+      - configs/vector.toml
+
+generatorOptions:
+  disableNameSuffixHash: true

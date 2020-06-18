@@ -1,0 +1,5 @@
+[sinks.stdout]
+  type = "console"
+  inputs = ["kubernetes_logs"]
+  target = "stdout"
+  encoding = "json"
