@@ -3,8 +3,10 @@ namespace: vector-test-kustomize
 bases:
   - github.com/timberio/vector/distribution/kubernetes?ref=k8s-kubectl-deployment
 
-patchesStrategicMerge:
-  - patches/vector-image.yaml
+images:
+  - name: timberio/vector
+    newName: mozgiii/vector-k8s-wip
+    newTag: rev5
 
 resources:
   - namespace.yaml
