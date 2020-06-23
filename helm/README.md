@@ -11,13 +11,16 @@
 First, add our repo:
 
 ```shell
-helm repo add timberio https://packages.timber.io/helm
+$ helm repo add timberio https://packages.timber.io/helm
+"timberio" has been added to your repositories
 ```
 
 Then find a `vector` chart in it:
 
 ```shell
-helm search repo vector
+$ helm search repo timberio
+NAME           	CHART VERSION	APP VERSION	DESCRIPTION
+timberio/vector	0.10.0       	0.10.0     	A Helm chart to collect Kubernetes logs with Ve...
 ```
 
 ## Prepare `values.yaml` and inspect the generated template
