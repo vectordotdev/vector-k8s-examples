@@ -6,6 +6,20 @@
 - `kubectl`
 - `helm` (we'll be using v3 in this example, v2 works too)
 
+## Add our repo to you local Helm
+
+First, add our repo:
+
+```shell
+helm repo add timberio https://packages.timber.io/helm
+```
+
+Then find a `vector` chart in it:
+
+```shell
+helm search repo vector
+```
+
 ## Prepare `values.yaml` and inspect the generated template
 
 In this example, we've prepared `values.yaml` beforehand. Take a look at it.
@@ -13,14 +27,14 @@ In this example, we've prepared `values.yaml` beforehand. Take a look at it.
 Then inspect the effective config that will be applied:
 
 ```shell
-$ helm template vector vector --values values.yaml --namespace vector --create-namespace
+$ helm template vector timberio/vector --values values.yaml --namespace vector --create-namespace
 ... config printed ...
 ```
 
 ## Deploy
 
 ```shell
-$ helm template vector vector --values values.yaml --namespace vector --create-namespace
+$ helm install vector timberio/vector --values values.yaml --namespace vector --create-namespace
 NAME: vector
 LAST DEPLOYED: Fri Jun 19 08:05:04 2020
 NAMESPACE: vector
