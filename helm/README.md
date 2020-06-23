@@ -11,7 +11,7 @@
 First, add our repo:
 
 ```shell
-$ helm repo add timberio https://packages.timber.io/helm
+$ helm repo add timberio https://packages.timber.io/helm/latest
 "timberio" has been added to your repositories
 ```
 
