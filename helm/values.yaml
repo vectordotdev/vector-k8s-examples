@@ -1,6 +1,6 @@
 image:
   repository: mozgiii/vector-k8s-wip
-  tag: rev5
+  tag: rev7
 
 sinks:
   stdout:

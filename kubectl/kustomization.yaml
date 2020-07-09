@@ -6,7 +6,7 @@ bases:
 images:
   - name: timberio/vector
     newName: mozgiii/vector-k8s-wip
-    newTag: rev5
+    newTag: rev7
 
 resources:
   - namespace.yaml
