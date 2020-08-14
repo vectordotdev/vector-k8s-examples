@@ -1,7 +1,3 @@
-image:
-  repository: mozgiii/vector-k8s-wip
-  tag: rev7
-
 sinks:
   stdout:
     type: console
