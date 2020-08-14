@@ -1,12 +1,12 @@
 namespace: vector-test-kustomize
 
 bases:
-  - github.com/timberio/vector/distribution/kubernetes?ref=k8s-kubectl-deployment
+  - github.com/timberio/vector/distribution/kubernetes
 
 images:
   - name: timberio/vector
-    newName: mozgiii/vector-k8s-wip
-    newTag: rev7
+    newName: timberio/vector
+    newTag: nightly-debian
 
 resources:
   - namespace.yaml
