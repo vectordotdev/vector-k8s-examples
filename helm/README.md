@@ -15,6 +15,11 @@ $ helm repo add timberio-nightly https://packages.timber.io/helm/nightly
 "timberio-nightly" has been added to your repositories
 ```
 
+> If you're using `nightly` repo - use pass `--devel` flag to `helm` commands
+> when you need to perform an operation on a package from a repo, for example:
+> `helm search repo timberio-nightly --devel` or
+> `helm install vector timberio-nightly/vector --devel ...`.
+
 Then find a `vector` chart in it:
 
 ```shell
