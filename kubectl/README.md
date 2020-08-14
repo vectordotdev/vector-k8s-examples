@@ -31,37 +31,36 @@ daemonset.apps/vector created
 
 ```shell
 $ kubectl get ns
-NAME                    STATUS   AGE
-default                 Active   86s
-kube-node-lease         Active   87s
-kube-public             Active   87s
-kube-system             Active   87s
-vector-test-kustomize   Active   53s
+NAME              STATUS   AGE
+default           Active   73s
+kube-node-lease   Active   75s
+kube-public       Active   75s
+kube-system       Active   75s
+vector            Active   9s
 
-$ kubectl get -n vector-test-kustomize daemonset
+$ kubectl get -n vector daemonset
 NAME     DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
-vector   1         1         1       1            1           <none>          92s
+vector   1         1         1       1            1           <none>          24s
 
-$ kubectl get -n vector-test-kustomize pod
+$ kubectl get -n vector pod
 NAME           READY   STATUS    RESTARTS   AGE
-vector-s5dsx   1/1     Running   0          113s
+vector-x4hf5   1/1     Running   0          40s
 
-$ kubectl logs -n vector-test-kustomize daemonset/vector
-Jun 18 21:32:24.658  INFO vector: Log level "info" is enabled.
-Jun 18 21:32:24.658  INFO vector: Loading configs. path=["/etc/vector/managed.toml", "/etc/vector/vector.toml"]
-Jun 18 21:32:24.661  INFO vector: Vector is starting. version="0.10.0" git_version="v0.9.0-286-g55827ad" released="Fri, 12 Jun 2020 06:40:00 +0000" arch="x86_64"
-Jun 18 21:32:24.662  INFO vector::sources::kubernetes_logs: obtained Kubernetes Node name to collect logs for (self) self_node_name="minikube"
-Jun 18 21:32:24.667  INFO vector::topology: Running healthchecks.
-Jun 18 21:32:24.667  INFO vector::topology: Starting source "kubernetes_logs"
-Jun 18 21:32:24.667  INFO vector::topology: Starting sink "stdout"
-Jun 18 21:32:24.667  INFO vector::topology::builder: Healthcheck: Passed.
-Jun 18 21:32:34.926  INFO source{name=kubernetes_logs type=kubernetes_logs}:file_server: file_source::file_server: Found file to watch. path="/var/log/pods/kube-system_storage-provisioner_0a31c08e-18d0-4205-add5-93f8f5f8a80a/storage-provisioner/0.log" file_position=0
-Jun 18 21:32:34.927  INFO source{name=kubernetes_logs type=kubernetes_logs}:file_server: file_source::file_server: Found file to watch. path="/var/log/pods/kube-system_coredns-66bff467f8-5zwbw_42651258-22a1-4712-93f3-61ec20e2c989/coredns/0.log" file_position=0
-Jun 18 21:32:34.928  INFO source{name=kubernetes_logs type=kubernetes_logs}:file_server: file_source::file_server: Found file to watch. path="/var/log/pods/kube-system_coredns-66bff467f8-vwhtk_cde3eaee-c8c3-4496-a00e-5b03d834e095/coredns/0.log" file_position=0
-Jun 18 21:32:34.928  INFO source{name=kubernetes_logs type=kubernetes_logs}:file_server: file_source::file_server: Found file to watch. path="/var/log/pods/kube-system_kube-proxy-r4w8b_14069ca3-a7a3-4503-8aca-ac138995f415/kube-proxy/0.log" file_position=0
-{"file":"/var/log/pods/kube-system_coredns-66bff467f8-5zwbw_42651258-22a1-4712-93f3-61ec20e2c989/coredns/0.log","kubernetes":{"pod_labels":{"k8s-app":"kube-dns","pod-template-hash":"66bff467f8"},"pod_name":"coredns-66bff467f8-5zwbw","pod_namespace":"kube-system","pod_uid":"42651258-22a1-4712-93f3-61ec20e2c989"},"message":".:53","source_type":"kubernetes_logs","stream":"stdout","timestamp":"2020-06-18T21:32:07.028250477Z"}
-{"file":"/var/log/pods/kube-system_coredns-66bff467f8-5zwbw_42651258-22a1-4712-93f3-61ec20e2c989/coredns/0.log","kubernetes":{"pod_labels":{"k8s-app":"kube-dns","pod-template-hash":"66bff467f8"},"pod_name":"coredns-66bff467f8-5zwbw","pod_namespace":"kube-system","pod_uid":"42651258-22a1-4712-93f3-61ec20e2c989"},"message":"[INFO] plugin/reload: Running configuration MD5 = 4e235fcc3696966e76816bcd9034ebc7","source_type":"kubernetes_logs","stream":"stdout","timestamp":"2020-06-18T21:32:07.028722894Z"}
-{"file":"/var/log/pods/kube-system_coredns-66bff467f8-5zwbw_42651258-22a1-4712-93f3-61ec20e2c989/coredns/0.log","kubernetes":{"pod_labels":{"k8s-app":"kube-dns","pod-template-hash":"66bff467f8"},"pod_name":"coredns-66bff467f8-5zwbw","pod_namespace":"kube-system","pod_uid":"42651258-22a1-4712-93f3-61ec20e2c989"},"message":"CoreDNS-1.6.7","source_type":"kubernetes_logs","stream":"stdout","timestamp":"2020-06-18T21:32:07.028756019Z"}
+$ kubectl logs -n vector daemonset/vector
+Aug 14 12:59:40.798  INFO vector: Log level "info" is enabled.
+Aug 14 12:59:40.799  INFO vector: Loading configs. path=["/etc/vector/managed.toml", "/etc/vector/vector.toml"]
+Aug 14 12:59:40.803  INFO vector: Vector is starting. version="0.11.0" git_version="v0.9.0-520-g3ffc3c3" released="Fri, 14 Aug 2020 04:43:21 +0000" arch="x86_64"
+Aug 14 12:59:40.803  INFO vector::sources::kubernetes_logs: obtained Kubernetes Node name to collect logs for (self) self_node_name="minikube"
+Aug 14 12:59:40.811  INFO vector::topology: Running healthchecks.
+Aug 14 12:59:40.811  INFO vector::topology: Starting source "kubernetes_logs"
+Aug 14 12:59:40.811  INFO vector::topology: Starting sink "stdout"
+Aug 14 12:59:40.811  INFO vector::topology::builder: Healthcheck: Passed.
+Aug 14 12:59:51.066  INFO source{name=kubernetes_logs type=kubernetes_logs}:file_server: vector::internal_events::file: found new file to watch. path="/var/log/pods/kube-system_coredns-66bff467f8-pb4vh_f0b1e0d0-6ea8-4ae6-8d72-17b9048d15f4/coredns/0.log"
+Aug 14 12:59:51.066  INFO source{name=kubernetes_logs type=kubernetes_logs}:file_server: vector::internal_events::file: found new file to watch. path="/var/log/pods/kube-system_kube-proxy-hs64v_bdd76333-e762-426c-8447-0b041cedc7f8/kube-proxy/0.log"
+Aug 14 12:59:51.066  INFO source{name=kubernetes_logs type=kubernetes_logs}:file_server: vector::internal_events::file: found new file to watch. path="/var/log/pods/kube-system_storage-provisioner_f3e3a029-764a-435e-befd-c4a31fd4a96f/storage-provisioner/1.log"
+Aug 14 12:59:51.066  INFO source{name=kubernetes_logs type=kubernetes_logs}:file_server: vector::internal_events::file: found new file to watch. path="/var/log/pods/kube-system_storage-provisioner_f3e3a029-764a-435e-befd-c4a31fd4a96f/storage-provisioner/2.log"
+{"file":"/var/log/pods/kube-system_coredns-66bff467f8-pb4vh_f0b1e0d0-6ea8-4ae6-8d72-17b9048d15f4/coredns/0.log","kubernetes":{"pod_labels":{"k8s-app":"kube-dns","pod-template-hash":"66bff467f8"},"pod_name":"coredns-66bff467f8-pb4vh","pod_namespace":"kube-system","pod_uid":"f0b1e0d0-6ea8-4ae6-8d72-17b9048d15f4"},"message":".:53","source_type":"kubernetes_logs","stream":"stdout","timestamp":"2020-08-14T12:58:55.598884439Z"}
+{"file":"/var/log/pods/kube-system_coredns-66bff467f8-pb4vh_f0b1e0d0-6ea8-4ae6-8d72-17b9048d15f4/coredns/0.log","kubernetes":{"pod_labels":{"k8s-app":"kube-dns","pod-template-hash":"66bff467f8"},"pod_name":"coredns-66bff467f8-pb4vh","pod_namespace":"kube-system","pod_uid":"f0b1e0d0-6ea8-4ae6-8d72-17b9048d15f4"},"message":"[INFO] plugin/reload: Running configuration MD5 = 4e235fcc3696966e76816bcd9034ebc7","source_type":"kubernetes_logs","stream":"stdout","timestamp":"2020-08-14T12:58:55.599356223Z"}
 ...
 ```
 
@@ -69,10 +68,9 @@ Jun 18 21:32:34.928  INFO source{name=kubernetes_logs type=kubernetes_logs}:file
 
 ```shell
 $ kubectl delete -k .
-namespace "vector-test-kustomize" deleted
+namespace "vector" deleted
 clusterrolebinding.rbac.authorization.k8s.io "vector" deleted
 configmap "vector-config" deleted
 configmap "vector-daemonset-managed-config" deleted
 daemonset.apps "vector" deleted
-
 ```
