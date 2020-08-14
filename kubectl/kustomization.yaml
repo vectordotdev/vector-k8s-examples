@@ -1,4 +1,4 @@
-namespace: vector-test-kustomize
+namespace: vector
 
 bases:
   - github.com/timberio/vector/distribution/kubernetes
