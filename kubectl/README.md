@@ -16,13 +16,22 @@ $ kubectl kustomize
 ... config printed ...
 ```
 
+> For production use, replace the `nightly-debian` tag with a specific
+> version, like `nightly-2020-10-14-debian`.
+> Using sliding tags, like `latest` or `nightly-debian`, is highly discouraged,
+> and can lead to unexpected behaviour.
+> We are only using a sliding `nightly-debian` tag instead of a more specific
+> `nightly-2020-10-14-debian`-like tag in this example to avoid updating it
+> for every version, but in the real world you should use a particular
+> version, and keep track of updates explicitly to avoid issues.
+
 ## Deploy
 
 ```shell
 $ kubectl apply -k .
 namespace/vector-test-kustomize created
 clusterrolebinding.rbac.authorization.k8s.io/vector created
-configmap/vector-config created
+configmap/vector-agent-config created
 configmap/vector-daemonset-managed-config created
 daemonset.apps/vector created
 ```
