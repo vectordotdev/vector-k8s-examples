@@ -12,9 +12,9 @@ resources:
   - namespace.yaml
 
 configMapGenerator:
-  - name: vector-config
+  - name: vector-agent-config
     files:
-      - configs/vector.toml
+      - configs/vector-agent.toml
 
 generatorOptions:
   disableNameSuffixHash: true
