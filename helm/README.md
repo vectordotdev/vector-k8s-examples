@@ -25,8 +25,8 @@ Then find a `vector` chart in it:
 ```shell
 $ helm search repo timberio-nightly --devel
 NAME                            CHART VERSION                   APP VERSION             DESCRIPTION
-timberio-nightly/vector         0.11.0-nightly-2020-10-14       nightly-2020-10-14      A Helm chart for Vector observability stack
-timberio-nightly/vector-agent   0.11.0-nightly-2020-10-14       nightly-2020-10-14      A Helm chart to collect Kubernetes logs with Ve...
+timberio-nightly/vector         0.11.0-nightly-2020-11-24       nightly-2020-11-24      A Helm chart for Vector observability stack
+timberio-nightly/vector-agent   0.11.0-nightly-2020-11-24       nightly-2020-11-24      A Helm chart to collect Kubernetes logs with Ve...
 ```
 
 As you can see, we have two charts right now: `vector` and `vector-agent`.
@@ -38,8 +38,7 @@ As you can see, we have two charts right now: `vector` and `vector-agent`.
 `vector-agent` (and `vector-aggregator` in the future) can be used to deploy
 individual components, if you like having separate helm releases better.
 
-In this example, we'll be using the `vector` chart. Currently, it only includes
-`vector-agent` and will deploy Vector as a `DaemonSet`.
+In this example, we'll be using the `vector-agent` chart.
 
 ## Prepare `values.yaml` and inspect the generated template
 
@@ -48,16 +47,16 @@ In this example, we've prepared `values.yaml` beforehand. Take a look at it.
 Then inspect the effective config that will be applied:
 
 ```shell
-$ helm template vector timberio-nightly/vector --devel --values values.yaml --namespace vector
+$ helm template vector timberio-nightly/vector-agent --devel --values values.yaml --namespace vector
 ... config printed ...
 ```
 
 ## Deploy
 
 ```shell
-$ helm install vector timberio-nightly/vector --devel --values values.yaml --namespace vector --create-namespace
+$ helm install vector timberio-nightly/vector-agent --devel --values values.yaml --namespace vector --create-namespace
 NAME: vector
-LAST DEPLOYED: Thu Oct 15 14:20:53 2020
+LAST DEPLOYED: Tue Nov 24 20:34:12 2020
 NAMESPACE: vector
 STATUS: deployed
 REVISION: 1
@@ -68,42 +67,42 @@ TEST SUITE: None
 
 ```shell
 $ helm list --all-namespaces
-NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                               APP VERSION
-vector  vector          1               2020-10-15 14:20:53.287578867 +0300 MSK deployed        vector-0.11.0-nightly-2020-10-14    nightly-2020-10-14
+NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                                   APP VERSION
+vector  vector          1               2020-11-24 20:34:12.391379748 +0300 MSK deployed        vector-agent-0.11.0-nightly-2020-11-24  nightly-2020-11-24
 
 $ kubectl get ns
 NAME              STATUS   AGE
-default           Active   41h
-kube-node-lease   Active   41h
-kube-public       Active   41h
-kube-system       Active   41h
-vector            Active   41s
+default           Active   3m23s
+kube-node-lease   Active   3m25s
+kube-public       Active   3m25s
+kube-system       Active   3m25s
+vector            Active   17s
 
 $ kubectl get -n vector daemonset
 NAME           DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
-vector-agent   1         1         1       1            1           <none>          57s
+vector-agent   1         1         1       1            1           <none>          26s
 
 $ kubectl get -n vector pod
 NAME                 READY   STATUS    RESTARTS   AGE
-vector-agent-vmf9k   1/1     Running   0          2m29s
+vector-agent-sfwhc   1/1     Running   0          34s
 
 $ kubectl logs -n vector daemonset/vector-agent
-Oct 15 11:09:03.142  INFO vector::app: Log level "info" is enabled.
-Oct 15 11:09:03.143  INFO vector::app: Loading configs. path=["/etc/vector/managed.toml"]
-Oct 15 11:09:03.145  INFO vector::sources::kubernetes_logs: obtained Kubernetes Node name to collect logs for (self) self_node_name="minikube"
-Oct 15 11:09:03.151  INFO vector::topology: Running healthchecks.
-Oct 15 11:09:03.151  INFO vector::topology: Starting source "kubernetes_logs"
-Oct 15 11:09:03.151  INFO vector::topology: Starting sink "stdout"
-Oct 15 11:09:03.151  INFO vector: Vector has started. version="0.11.0" git_version="v0.9.0-1024-g04faa5f" released="Thu, 15 Oct 2020 04:44:38 +0000" arch="x86_64"
-Oct 15 11:09:03.151  INFO vector::topology::builder: Healthcheck: Passed.
-Oct 15 11:09:13.408  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file: Found new file to watch. path="/var/log/pods/kube-system_storage-provisioner_93bde4d0-9731-4785-a80e-cd27ba8ad7c2/storage-provisioner/1.log"
-Oct 15 11:09:13.408  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file: Found new file to watch. path="/var/log/pods/kube-system_storage-provisioner_93bde4d0-9731-4785-a80e-cd27ba8ad7c2/storage-provisioner/2.log"
-Oct 15 11:09:13.423  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file: Resuming to watch file. path="/var/log/pods/kube-system_coredns-f9fd979d6-sq775_a95b23c5-e9bc-4880-b586-531b40c9db0a/coredns/0.log" file_position=411
-Oct 15 11:09:13.423  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file: Found new file to watch. path="/var/log/pods/kube-system_coredns-f9fd979d6-sq775_a95b23c5-e9bc-4880-b586-531b40c9db0a/coredns/1.log"
-Oct 15 11:09:13.423  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file: Resuming to watch file. path="/var/log/pods/kube-system_kube-proxy-vxlhh_d0942b93-9877-48c9-918a-ea71d2aac57e/kube-proxy/0.log" file_position=2694
-Oct 15 11:09:13.423  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file: Found new file to watch. path="/var/log/pods/kube-system_kube-proxy-vxlhh_d0942b93-9877-48c9-918a-ea71d2aac57e/kube-proxy/1.log"
-{"file":"/var/log/pods/kube-system_storage-provisioner_93bde4d0-9731-4785-a80e-cd27ba8ad7c2/storage-provisioner/1.log","kubernetes":{"container_image":"gcr.io/k8s-minikube/storage-provisioner:v3","container_name":"storage-provisioner","pod_labels":{"addonmanager.kubernetes.io/mode":"Reconcile","gcp-auth-skip-secret":"true","integration-test":"storage-provisioner"},"pod_name":"storage-provisioner","pod_namespace":"kube-system","pod_node_name":"minikube","pod_uid":"93bde4d0-9731-4785-a80e-cd27ba8ad7c2"},"message":"F1015 11:01:46.499073       1 main.go:39] error getting server version: Get \"https://10.96.0.1:443/version?timeout=32s\": dial tcp 10.96.0.1:443: connect: network is unreachable","source_type":"kubernetes_logs","stream":"stderr","timestamp":"2020-10-15T11:01:46.499555308Z"}
-{"file":"/var/log/pods/kube-system_storage-provisioner_93bde4d0-9731-4785-a80e-cd27ba8ad7c2/storage-provisioner/2.log","kubernetes":{"container_image":"gcr.io/k8s-minikube/storage-provisioner:v3","container_name":"storage-provisioner","pod_labels":{"addonmanager.kubernetes.io/mode":"Reconcile","gcp-auth-skip-secret":"true","integration-test":"storage-provisioner"},"pod_name":"storage-provisioner","pod_namespace":"kube-system","pod_node_name":"minikube","pod_uid":"93bde4d0-9731-4785-a80e-cd27ba8ad7c2"},"message":"I1015 11:02:00.223249       1 leaderelection.go:242] attempting to acquire leader lease  kube-system/k8s.io-minikube-hostpath...","source_type":"kubernetes_logs","stream":"stderr","timestamp":"2020-10-15T11:02:00.223353138Z"}
+Nov 24 17:34:22.714  INFO vector::app: Log level is enabled. level="vector=info,codec=info,file_source=info,tower_limit=trace,rdkafka=info"
+Nov 24 17:34:22.714  INFO vector::app: Loading configs. path=["/etc/vector/managed.toml"]
+Nov 24 17:34:22.718  INFO vector::sources::kubernetes_logs: Obtained Kubernetes Node name to collect logs for (self). self_node_name="minikube"
+Nov 24 17:34:22.730  INFO vector::topology: Running healthchecks.
+Nov 24 17:34:22.730  INFO vector::topology: Starting source. name="kubernetes_logs"
+Nov 24 17:34:22.730  INFO vector::topology: Starting sink. name="stdout"
+Nov 24 17:34:22.730  INFO vector: Vector has started. version="0.11.0" git_version="v0.9.0-1430-g106b250" released="Tue, 24 Nov 2020 04:40:18 +0000" arch="x86_64"
+Nov 24 17:34:22.730  INFO vector::app: API is disabled, enable by setting `api.enabled` to `true` and use commands like `vector top`.
+Nov 24 17:34:22.730  INFO vector::topology::builder: Healthcheck: Passed.
+Nov 24 17:34:22.732  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: file_source::checkpointer: Attempting to read legacy checkpoint files.
+Nov 24 17:35:24.222  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file::source: Found new file to watch. path="/var/log/pods/kube-system_kube-proxy-8crt4_bb652a29-9877-4912-a158-6523f4b2f9d3/kube-proxy/0.log"
+Nov 24 17:35:24.222  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file::source: Found new file to watch. path="/var/log/pods/kube-system_coredns-f9fd979d6-p9xzz_96f91559-e63c-4476-be44-4af79e8bfdda/coredns/0.log"
+Nov 24 17:35:24.223  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file::source: Found new file to watch. path="/var/log/pods/kube-system_storage-provisioner_94a1659d-facb-49eb-824a-7ca4d156c5e1/storage-provisioner/0.log"
+Nov 24 17:35:24.224  INFO source{component_kind="source" component_name=kubernetes_logs component_type=kubernetes_logs}:file_server: vector::internal_events::file::source: Found new file to watch. path="/var/log/pods/kube-system_storage-provisioner_94a1659d-facb-49eb-824a-7ca4d156c5e1/storage-provisioner/1.log"
+{"file":"/var/log/pods/kube-system_kube-proxy-8crt4_bb652a29-9877-4912-a158-6523f4b2f9d3/kube-proxy/0.log","kubernetes":{"container_image":"k8s.gcr.io/kube-proxy:v1.19.4","container_name":"kube-proxy","pod_ip":"192.168.49.2","pod_ips":["192.168.49.2"],"pod_labels":{"controller-revision-hash":"84f98f87f8","k8s-app":"kube-proxy","pod-template-generation":"1"},"pod_name":"kube-proxy-8crt4","pod_namespace":"kube-system","pod_node_name":"minikube","pod_uid":"bb652a29-9877-4912-a158-6523f4b2f9d3"},"message":"I1124 17:31:29.102504       1 node.go:136] Successfully retrieved node IP: 192.168.49.2","source_type":"kubernetes_logs","stream":"stderr","timestamp":"2020-11-24T17:31:29.103324294Z"}
+{"file":"/var/log/pods/kube-system_kube-proxy-8crt4_bb652a29-9877-4912-a158-6523f4b2f9d3/kube-proxy/0.log","kubernetes":{"container_image":"k8s.gcr.io/kube-proxy:v1.19.4","container_name":"kube-proxy","pod_ip":"192.168.49.2","pod_ips":["192.168.49.2"],"pod_labels":{"controller-revision-hash":"84f98f87f8","k8s-app":"kube-proxy","pod-template-generation":"1"},"pod_name":"kube-proxy-8crt4","pod_namespace":"kube-system","pod_node_name":"minikube","pod_uid":"bb652a29-9877-4912-a158-6523f4b2f9d3"},"message":"I1124 17:31:29.102741       1 server_others.go:111] kube-proxy node IP is an IPv4 address (192.168.49.2), assume IPv4 operation","source_type":"kubernetes_logs","stream":"stderr","timestamp":"2020-11-24T17:31:29.103428150Z"}
 ...
 ```
 
