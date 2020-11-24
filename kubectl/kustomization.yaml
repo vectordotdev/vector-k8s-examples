@@ -1,7 +1,7 @@
 namespace: vector
 
 bases:
-  - github.com/timberio/vector/distribution/kubernetes
+  - github.com/timberio/vector/distribution/kubernetes/vector-agent?ref=master
 
 images:
   - name: timberio/vector
