@@ -1,3 +1,7 @@
+**Vector has since launched its Kuberentes integration**
+
+Please see: https://vector.dev/docs/setup/installation/platforms/kubernetes/
+
 # Examples for using Vector with Kubernetes
 
 This repo hold example configuration for deploying Vector into Kubernetes
